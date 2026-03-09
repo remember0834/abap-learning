@@ -111,6 +111,16 @@ SAP Learning Hub에서 학습한 ABAP 코드 모음입니다.
 - 항공사 이름 포함 조회 (carrier_name)
 - CDS View와 Database Table 비교 학습
 
+#### ZCL_20260309_STRUCTURE (Exercise 14)
+- 구조체 타입 정의 (TYPES: BEGIN OF ... END OF)
+- 구조화된 데이터 객체 사용
+- 개별 속성을 구조체로 통합
+- 구조체 컴포넌트 접근 (details-componentname)
+- SELECT 문으로 구조체 채우기
+- INTO CORRESPONDING FIELDS OF 사용
+- 이름 기반 필드 매핑
+- alias 지정으로 필드 매핑 최적화
+
 ---
 
 ## 📈 학습 진행 경로
@@ -126,7 +136,22 @@ Phase 3: 객체지향 (2026.01.19-22)
 
 Phase 4: 데이터베이스 (2026.01.23-03.09)
   └─ SELECT, CDS View, Association
+
+Phase 5: 고급 데이터 처리 (2026.03.09)
+  └─ CDS View, Association, 구조체  
 ```
+
+## 🎯 주요 학습 성과
+
+### Unit 4: 데이터베이스 읽기
+- ✅ Database Table 직접 조회
+- ✅ CDS View 활용
+- ✅ Association을 통한 데이터 조인
+
+### Unit 5: 구조화된 데이터 처리
+- ✅ 사용자 정의 구조체 타입
+- ✅ 구조체로 데이터 그룹화
+- ✅ CORRESPONDING FIELDS OF 패턴
 
 ## 📅 학습 기간
 2025.11.05 ~ 진행중
@@ -136,9 +161,33 @@ Phase 4: 데이터베이스 (2026.01.23-03.09)
 - Eclipse ADT (ABAP Development Tools)
 - ABAP 7.4+
 
-## 📖 주요 학습 내용
-- ABAP 기본 문법
-- 객체지향 프로그래밍 (OOP)
-- 데이터베이스 조회 (SELECT)
-- CDS View & Association
-- 디버깅 기법
+## 📖 핵심 학습 내용
+
+### 기본 문법
+- ABAP 기본 구문
+- 변수와 연산자
+- 조건문과 반복문
+
+### 객체지향 프로그래밍
+- 클래스와 객체
+- 메서드 구현
+- 생성자 패턴
+- 캡슐화
+
+### 데이터베이스
+- SELECT 문 (SINGLE, TABLE)
+- WHERE 조건절
+- INTO 절 (개별 변수, 구조체)
+- sy-subrc 에러 처리
+
+### CDS View
+- CDS View Entity 구조
+- Association 활용
+- Alias 사용
+- Path Expression
+
+### 구조화된 데이터
+- Structure Type 정의
+- 구조체 컴포넌트 접근
+- CORRESPONDING FIELDS OF
+- 이름 기반 필드 매핑
