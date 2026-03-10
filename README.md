@@ -121,6 +121,17 @@ SAP Learning Hub에서 학습한 ABAP 코드 모음입니다.
 - 이름 기반 필드 매핑
 - alias 지정으로 필드 매핑 최적화
 
+#### ZCL_20260310_ITAB (Exercise 15)
+- Internal Table (내부 테이블) 사용
+- Table Type 정의 (STANDARD TABLE)
+- CLASS-DATA로 정적 속성 선언
+- CLASS_CONSTRUCTOR (클래스 생성자) 구현
+- SELECT ... INTO TABLE로 여러 레코드 조회
+- Table Expression `[ ]`으로 테이블 검색
+- Inline Declaration `DATA(변수)` 사용
+- 공항 이름 출력 기능 구현
+- 메모리 기반 데이터 버퍼링
+
 ---
 
 ## 📈 학습 진행 경로
@@ -138,7 +149,10 @@ Phase 4: 데이터베이스 (2026.01.23-03.09)
   └─ SELECT, CDS View, Association
 
 Phase 5: 고급 데이터 처리 (2026.03.09)
-  └─ CDS View, Association, 구조체  
+  └─ CDS View, Association, 구조체
+
+Phase 6: 내부 테이블 (2026.03.10)
+  └─ Internal Table, Table Expression, 정적속성  
 ```
 
 ## 🎯 주요 학습 성과
@@ -152,6 +166,12 @@ Phase 5: 고급 데이터 처리 (2026.03.09)
 - ✅ 사용자 정의 구조체 타입
 - ✅ 구조체로 데이터 그룹화
 - ✅ CORRESPONDING FIELDS OF 패턴
+
+### Unit 6: 복잡한 내부 테이블
+- ✅ Internal Table 정의 및 사용
+- ✅ 정적 속성과 클래스 생성자
+- ✅ Table Expression으로 데이터 검색
+- ✅ 메모리 기반 데이터 관리
 
 ## 📅 학습 기간
 2025.11.05 ~ 진행중
@@ -191,3 +211,12 @@ Phase 5: 고급 데이터 처리 (2026.03.09)
 - 구조체 컴포넌트 접근
 - CORRESPONDING FIELDS OF
 - 이름 기반 필드 매핑
+
+
+### 내부 테이블
+- Table Type 정의 (STANDARD TABLE)
+- Internal Table 선언 및 사용
+- SELECT INTO TABLE (여러 레코드)
+- Table Expression `[condition]`
+- Inline Declaration `DATA(변수)`
+- 정적 데이터 관리 (CLASS-DATA)
