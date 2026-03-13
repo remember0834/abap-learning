@@ -136,6 +136,20 @@ SAP Learning Hub에서 학습한 ABAP 코드 모음입니다.
 - 공항 이름 출력 기능 구현
 - 메모리 기반 데이터 버퍼링
 
+### 2026년 3월 13일
+
+#### ZCL_20260313_BUSINESS_OBJECT_ANALYSIS (Exercise 16)
+- Business Object Interface 분석
+- Behavior Definition 구조 이해
+- CDS View 계층 구조 (Interface → Root → Table)
+- Validation과 Authorization 개념
+- Behavior Pool 구조 (Global vs Local Classes)
+- Managed Business Object
+- Draft 지원 기능
+- RAP (RESTful ABAP Programming) 개념
+
+
+
 ---
 
 ## 📈 학습 진행 경로
@@ -157,6 +171,10 @@ Phase 5: 고급 데이터 처리 (2026.03.09)
 
 Phase 6: 내부 테이블 (2026.03.10)
   └─ Internal Table, Table Expression, 정적속성  
+
+Phase 7: Business Object (2026.03.13)
+  └─ RAP, Behavior Definition, Validation, Authorization
+
 ```
 
 ## 🎯 주요 학습 성과
@@ -176,6 +194,14 @@ Phase 6: 내부 테이블 (2026.03.10)
 - ✅ 정적 속성과 클래스 생성자
 - ✅ Table Expression으로 데이터 검색
 - ✅ 메모리 기반 데이터 관리
+
+
+### Unit 7: Business Object
+- ✅ Business Object 계층 구조 이해
+- ✅ Behavior Definition 분석
+- ✅ Validation과 Authorization 메커니즘
+- ✅ RAP 프레임워크 개념
+
 
 ## 📅 학습 기간
 2025.11.05 ~ 진행중
@@ -224,3 +250,12 @@ Phase 6: 내부 테이블 (2026.03.10)
 - Table Expression `[condition]`
 - Inline Declaration `DATA(변수)`
 - 정적 데이터 관리 (CLASS-DATA)
+
+
+### Business Object (RAP)
+- Business Object 계층 구조
+- Behavior Definition (managed, projection, interface)
+- Validation (on save)
+- Authorization (global, instance)
+- Behavior Pool 구조
+- Draft 기능
