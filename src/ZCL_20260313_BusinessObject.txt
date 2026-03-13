@@ -1,0 +1,340 @@
+📘 Exercise 16: Business Object 분석 - 학습 정리
+🎯 학습 목표
+
+Business Object Interface 구조 이해
+Behavior Definition 분석
+RAP (RESTful ABAP Programming) 개념 파악
+Validation과 Authorization 메커니즘 이해
+
+
+📚 핵심 개념
+1. Business Object란?
+정의:
+
+데이터 + 비즈니스 로직을 하나로 묶은 완전한 개체
+SAP의 RAP (RESTful ABAP Programming) 모델의 핵심
+CRUD 작업을 표준화된 방식으로 제공
+
+전통적 방식 vs Business Object:
+abap// 전통적 방식
+INSERT INTO /dmo/agency VALUES ...
+UPDATE /dmo/agency SET ...
+DELETE FROM /dmo/agency WHERE ...
+→ 검증, 권한 체크 직접 구현 필요
+
+// Business Object 방식
+MODIFY ENTITIES OF /DMO/I_AgencyTP ...
+→ 검증, 권한 자동 실행
+→ 비즈니스 규칙 자동 적용
+```
+
+---
+
+### 2. Business Object 계층 구조
+```
+┌─────────────────────────────────────────────┐
+│  Interface Layer                             │
+│  /DMO/I_AgencyTP (Behavior + CDS)           │
+│  - 외부 접근 레이어                          │
+│  - projection; interface; use draft;         │
+└─────────────────────────────────────────────┘
+              ↓ projection on
+┌─────────────────────────────────────────────┐
+│  Business Object Layer                       │
+│  /DMO/R_AgencyTP (Behavior + CDS)           │
+│  - 비즈니스 로직 레이어                      │
+│  - managed; validations; authorizations      │
+└─────────────────────────────────────────────┘
+              ↓ select from
+┌─────────────────────────────────────────────┐
+│  Data Layer                                  │
+│  /dmo/agency (Database Table)               │
+│  - 물리적 저장소                             │
+└─────────────────────────────────────────────┘
+명명 규칙:
+
+/DMO/I_* - Interface (공개 인터페이스)
+/DMO/R_* - Root (Business Object)
+/DMO/C_* - Consumption (Projection)
+
+
+📋 Task별 학습 내용
+Task 1: Interface Behavior 분석
+분석 대상: /DMO/I_AgencyTP Behavior Definition
+주요 키워드:
+1. interface;
+
+Business Object의 공개 인터페이스임을 선언
+외부 시스템/UI에서 접근하는 계층
+실제 Business Object 위의 레이어
+
+2. use draft;
+
+Draft (임시 버전) 기능 지원
+사용자가 데이터를 저장 전 임시 보관 가능
+예: 문서 작성 중 → 임시 저장 → 나중에 완료
+
+3. extensible
+
+인터페이스 확장 가능
+고객/파트너가 추가 필드나 기능 추가 가능
+SAP 표준 수정 없이 확장
+
+표준 작업 (Standard Operations):
+abapuse create;   // 생성
+use update;   // 수정
+use delete;   // 삭제
+비표준 작업 (Draft Actions):
+abapuse action Edit;
+use action Activate;
+use action Discard;
+use action Resume;
+use action Prepare;
+```
+
+---
+
+### Task 2: 데이터 구조 분석
+
+**분석 경로:**
+```
+/DMO/I_AgencyTP (CDS View - Interface)
+    ↓ projection on
+/DMO/R_AgencyTP (CDS View - Business Object)
+    ↓ select from
+/dmo/agency (Database Table)
+주요 발견:
+/DMO/I_AgencyTP
+
+Key Element: AgencyID
+Extensible: true (확장 가능)
+Data Source: /DMO/R_AgencyTP
+Provider Contract: transactional_interface
+
+/DMO/R_AgencyTP
+
+Extensible: true
+Data Source: /dmo/agency (Database Table)
+Type: Business Object (not projection)
+
+as select from 사용 (not as projection on)
+
+
+
+
+Task 3: Business Object Behavior 분석
+분석 대상: /DMO/R_AgencyTP Behavior Definition
+1. managed 키워드
+abapmanaged implementation in class /dmo/bp_r_agencytp unique;
+의미:
+
+관리형 Business Object 선언
+표준 CRUD 작업을 프레임워크가 자동 처리
+개발자는 특수 로직만 구현
+
+2. implementation in class
+abapimplementation in class /dmo/bp_r_agencytp unique;
+의미:
+
+비즈니스 로직 구현 클래스 지정
+/dmo/bp_r_agencytp = Behavior Pool
+unique = 각 작업을 정확히 한 번만 구현 가능
+
+3. Field 속성
+abapfield ( readonly ) AgencyID;      // 읽기 전용
+field ( mandatory ) Name;         // 필수 입력
+field ( mandatory ) CountryCode;  // 필수 입력
+readonly 이유:
+
+AgencyID는 Key 필드
+생성 후 변경하면 다른 레코드가 되므로
+수정 불가능하게 설정
+
+4. Validation
+abapvalidation /DMO/validateName on save 
+{ create; field Name; }
+```
+
+**구성 요소:**
+- `validation /DMO/validateName` - Validation 이름
+- `on save` - 저장 시점에 실행
+- `{ create; field Name; }` - Trigger 조건
+
+**Trigger 조건:**
+| 작업 | Name 변경 | 실행 여부 |
+|------|-----------|----------|
+| Create | - | ✅ 항상 |
+| Update | ✅ 변경됨 | ✅ 실행 |
+| Update | ❌ 변경 안 됨 | ❌ 미실행 |
+
+---
+
+### Task 4: Behavior Implementation 분석
+
+**분석 대상:** `/DMO/BP_R_AGENCYTP` Behavior Pool
+
+#### 구조
+```
+/DMO/BP_R_AGENCYTP (Global Class)
+    ↓ 빈 껍데기 (Wrapper)
+Local Classes (실제 구현)
+    └─ lhc_agency
+        ├─ get_global_authorizations (권한 체크)
+        ├─ /dmo/validatename (Name 검증)
+        ├─ /dmo/validatecountry (Country 검증)
+        ├─ /dmo/validateemailaddress (Email 검증)
+        └─ /dmo/validatephonenumber (Phone 검증)
+메서드 분류
+1. Authorization (1개)
+abapMETHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+
+전역 권한 검사
+작업 실행 전 권한 확인
+Create, Update, Delete 권한 체크
+
+2. Validation (4개)
+abapMETHODS /dmo/validatename FOR VALIDATE ON SAVE
+METHODS /dmo/validatecountry FOR VALIDATE ON SAVE
+METHODS /dmo/validateemailaddress FOR VALIDATE ON SAVE
+METHODS /dmo/validatephonenumber FOR VALIDATE ON SAVE
+```
+- 각 필드별 검증 로직
+- 저장 **시** 자동 실행
+- 비즈니스 규칙 준수 보장
+
+#### 실행 순서
+```
+1. 사용자 작업 시도
+   ↓
+2. get_global_authorizations (권한 체크)
+   ↓ (권한 있으면)
+3. 데이터 입력
+   ↓
+4. Save 클릭
+   ↓
+5. Validations 실행 (모든 검증)
+   ↓ (모두 성공 시)
+6. Database 저장
+
+🔄 Python 프레임워크와 비교
+FastAPI/Pydantic과 비교
+FastAPI:
+pythonfrom pydantic import BaseModel, validator
+
+class Agency(BaseModel):
+    agency_id: str
+    name: str
+    country_code: str
+    
+    @validator('name')
+    def validate_name(cls, v):
+        if not v.strip():
+            raise ValueError('Name required')
+        return v
+ABAP RAP:
+abap" Behavior Definition
+validation /dmo/validatename on save 
+{ create; field Name; }
+
+" Behavior Pool
+METHOD /dmo/validatename FOR VALIDATE ON SAVE.
+  " 검증 로직
+ENDMETHOD.
+Django ORM과 비교
+Django:
+pythonclass Agency(models.Model):
+    agency_id = models.CharField(primary_key=True)
+    name = models.CharField(max_length=100)
+    
+    def clean(self):
+        if not self.name:
+            raise ValidationError('Name required')
+ABAP RAP:
+abapdefine behavior for /DMO/R_AgencyTP
+{
+  field ( readonly ) AgencyID;
+  field ( mandatory ) Name;
+  validation /dmo/validatename on save;
+}
+
+💡 핵심 차이점
+전통적 접근 vs Business Object
+측면전통적 ABAPBusiness Object (RAP)데이터 접근직접 SQLCDS View검증수동 구현자동 실행권한수동 체크자동 체크Draft직접 구현프레임워크 제공일관성개발자 책임프레임워크 보장재사용성낮음높음
+ABAP RAP만의 특징
+1. 선언적 프로그래밍
+abap// 선언만 하면 자동 실행
+field ( mandatory ) Name;
+validation /dmo/validatename on save;
+2. 다중 채널 지원
+
+Fiori UI
+OData API
+ABAP 코드
+Batch Job
+→ 모두 동일한 비즈니스 로직 적용
+
+3. 프레임워크 통합
+
+Authorization, Validation, Draft가 완전 통합
+우회 불가능
+일관성 보장
+
+
+📊 Behavior Definition 키워드 정리
+키워드위치의미projection;Interface/Consumption프로젝션 레이어interface;Interface공개 인터페이스managed;Business Object관리형 BOuse draft;InterfaceDraft 지원extensibleInterface/BO확장 가능field ( readonly )BO읽기 전용 필드field ( mandatory )BO필수 필드validation ... on saveBO저장 시 검증authorizationBO권한 체크
+
+🎓 학습 성과
+이번 Exercise를 통해:
+✅ Business Object의 3계층 구조 완벽 이해
+
+Interface → Business Object → Database Table
+
+✅ RAP의 선언적 프로그래밍 방식 이해
+
+Behavior Definition으로 선언
+프레임워크가 자동 실행
+
+✅ Validation과 Authorization 메커니즘 파악
+
+저장 시 자동 검증
+작업 전 자동 권한 체크
+
+✅ Behavior Pool 구조 이해
+
+Global Class = Wrapper
+Local Classes = 실제 구현
+
+✅ 실제 Business Object 분석 능력 습득
+
+CDS View 추적
+Behavior Definition 해석
+구현 클래스 찾기
+
+
+🔜 다음 단계
+Exercise 17 예상:
+
+Business Object 사용 방법
+CRUD 작업 수행
+Validation 동작 확인
+Draft 기능 활용
+
+준비된 지식:
+
+Business Object 구조 이해 ✅
+Validation 개념 파악 ✅
+Authorization 메커니즘 이해 ✅
+이제 실제로 사용할 준비 완료!
+
+
+📚 참고 자료
+
+SAP RAP (RESTful ABAP Programming) 공식 문서
+Business Object 개발 가이드
+CDS View Best Practices
+Behavior Definition 레퍼런스
+
+
+작성일: 2026-03-10
+학습 과정: SAP ABAP Learning Hub - Unit 7
+Exercise: 16 - Analyze a Business Object
