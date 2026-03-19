@@ -160,6 +160,28 @@ SAP Learning Hub에서 학습한 ABAP 코드 모음입니다.
 - Business Object의 Validation/Authorization 자동 실행
 - 전통적 SQL 대비 안전한 데이터 조작
 
+### 2026년 3월 19일
+
+#### ZS4D400_20260319_RAP (Package - Exercise 18)
+- RAP 전용 서브패키지 생성
+- Superpackage 관계 설정 (ZS4D400_20251105)
+- OData UI Service 준비
+- Eclipse ADT 업데이트 및 트러블슈팅
+- Workspace 버전 관리
+
+#### Z20260319FLIGHT (Database Table - Exercise 18)
+- 템플릿 테이블 `/LRN/S4D400_APT` 복사
+- Flight 데이터 저장용 테이블
+- Database Table Duplicate 기능 활용
+- 테이블 활성화 및 검증
+
+#### ZCL_20260319_COPY (Class - Exercise 18)
+- Database Table 데이터 채우기 클래스
+- `/DMO/FLIGHT`에서 샘플 데이터 복사
+- 로컬 클래스 lcl_copy_data 활용
+- Dynamic SQL로 테이블 조작
+- Timestamp 및 사용자 정보 자동 설정
+- 기존 데이터 삭제 후 재생성
 
 ---
 
@@ -185,6 +207,9 @@ Phase 6: 내부 테이블 (2026.03.10)
 
 Phase 7: Business Object (2026.03.13-17)
   └─ RAP, Behavior Definition, Validation, Authorization, EML
+
+Phase 8: OData UI Service 준비 (2026.03.19)
+  └─ 서브패키지, Database Table 복사, 샘플 데이터 생성
 
 ```
 
@@ -214,6 +239,13 @@ Phase 7: Business Object (2026.03.13-17)
 - ✅ RAP 프레임워크 개념
 - ✅ EML을 통한 안전한 데이터 조작
 - ✅ COMMIT ENTITIES를 통한 트랜잭션 관리
+
+### Unit 8: OData UI Service
+- ✅ 패키지 계층 구조 (Superpackage/Subpackage)
+- ✅ Database Table Duplicate
+- ✅ Dynamic SQL 활용
+- ✅ 샘플 데이터 자동 생성
+- ✅ Eclipse ADT 트러블슈팅
 
 ## 📅 학습 기간
 2025.11.05 ~ 진행중
@@ -279,3 +311,23 @@ Phase 7: Business Object (2026.03.13-17)
 - COMMIT ENTITIES (트랜잭션 확정)
 - Business Object를 통한 안전한 데이터 조작
 - Validation/Authorization 자동 실행
+
+### 패키지 관리
+- Superpackage/Subpackage 계층 구조
+- Software Component (ZLOCAL, LOCAL)
+- Transport Layer
+- Package Type (Development, Structure)
+- Favorite Packages
+
+### Database Table 관리
+- Table Duplicate 기능
+- Dynamic SQL (`(table_name)`)
+- 테이블 구조 검증
+- 샘플 데이터 생성
+- Timestamp 자동 설정
+
+### Eclipse ADT
+- ADT 업데이트 및 버전 관리
+- Workspace 버전 호환성
+- 트러블슈팅 기법
+- Development Object 복사
