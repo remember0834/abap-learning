@@ -183,6 +183,36 @@ SAP Learning Hub에서 학습한 ABAP 코드 모음입니다.
 - Timestamp 및 사용자 정보 자동 설정
 - 기존 데이터 삭제 후 재생성
 
+### 2026년 3월 20일
+
+#### ZR_20260319FLIGHT, ZC_20260319FLIGHT (CDS Views - Exercise 19)
+- RAP Generator로 OData UI Service 자동 생성
+- Root CDS View (ZR) - Business Object Layer
+- Projection CDS View (ZC) - Service Layer
+- 14개 객체 자동 생성 (CDS, Behavior, Service)
+
+#### ZBP_R_20260319FLIGHT, ZBP_C_20260319FLIGHT (Behavior Pools - Exercise 19)
+- Behavior Implementation Classes
+- Root Behavior Pool (ZBP_R) - 비즈니스 로직 구현
+- Projection Behavior Pool (ZBP_C) - 서비스 인터페이스
+- Draft 기능 지원
+
+#### ZUI_FLIGHT20260319_O4 (Service Definition & Binding - Exercise 19)
+- OData V4 UI Service 정의
+- Service Binding 생성 및 Publish
+- SAP Fiori Elements 앱 Preview
+- CRUD 기능 자동 생성
+- 기술적 검증 (데이터 타입, 필드 길이, 참조 무결성)
+
+#### ZBP_R_20260319FLIGHT - Validations (Exercise 20)
+- validatePrice 구현 (Price > 0 검증)
+- validateCurrencyCode 구현 (유효한 통화 코드 검증)
+- EML READ ENTITIES로 Transactional Buffer에서 데이터 읽기
+- failed-flight, reported-flight로 에러 보고
+- Message Class /LRN/S4D400 사용 (메시지 101, 102)
+- I_Currency CDS View로 통화 코드 유효성 검증
+- Breakpoint 설정 및 디버깅
+- 비즈니스 로직 검증 구현 (저장 시 실행)
 ---
 
 ## 📈 학습 진행 경로
@@ -208,8 +238,8 @@ Phase 6: 내부 테이블 (2026.03.10)
 Phase 7: Business Object (2026.03.13-17)
   └─ RAP, Behavior Definition, Validation, Authorization, EML
 
-Phase 8: OData UI Service 준비 (2026.03.19)
-  └─ 서브패키지, Database Table 복사, 샘플 데이터 생성
+Phase 8: OData UI Service 준비 (2026.03.19-20)
+  └─ 서브패키지, Database Table 복사, 샘플 데이터 생성, RAP Generator, Fiori 앱, Validation
 
 ```
 
@@ -245,6 +275,11 @@ Phase 8: OData UI Service 준비 (2026.03.19)
 - ✅ Database Table Duplicate
 - ✅ Dynamic SQL 활용
 - ✅ 샘플 데이터 자동 생성
+- ✅ RAP Generator로 객체 자동 생성
+- ✅ Service Binding 및 Publish
+- ✅ SAP Fiori Elements 앱 실행
+- ✅ 기술적 검증 (데이터 타입, 길이, 참조 무결성)
+- ✅ 비즈니스 로직 검증 구현 (Validation)
 - ✅ Eclipse ADT 트러블슈팅
 
 ## 📅 학습 기간
@@ -312,6 +347,22 @@ Phase 8: OData UI Service 준비 (2026.03.19)
 - Business Object를 통한 안전한 데이터 조작
 - Validation/Authorization 자동 실행
 
+### RAP Generator & OData Service
+- RAP Generator로 객체 자동 생성
+- Root vs Projection 계층 구조
+- Service Definition & Service Binding
+- OData V4 UI Service
+- SAP Fiori Elements 앱
+- CRUD 기능 자동 구현
+
+### Validation 구현
+- Behavior Definition에 Validation 정의
+- EML READ ENTITIES로 데이터 읽기
+- failed-flight, reported-flight 에러 보고
+- Message Class 활용
+- 기술적 검증 vs 비즈니스 로직 검증
+- Breakpoint 디버깅
+
 ### 패키지 관리
 - Superpackage/Subpackage 계층 구조
 - Software Component (ZLOCAL, LOCAL)
@@ -331,3 +382,5 @@ Phase 8: OData UI Service 준비 (2026.03.19)
 - Workspace 버전 호환성
 - 트러블슈팅 기법
 - Development Object 복사
+- Variables 창 활용
+- Breakpoint 설정
